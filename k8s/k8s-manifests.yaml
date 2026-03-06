@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: user-activity-log-service
+  labels:
+    app: user-activity-log
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: user-activity-log
+  template:
+    metadata:
+      labels:
+        app: user-activity-log
+    spec:
+      containers:
+      - name: user-activity-log
+        image: your-docker-registry/user-activity-log-service:latest
+        ports:
+        - containerPort: 3000
+        env:
+        - name: PORT
+          value: "3000"
+        - name: MONGODB_URI
+          value: "mongodb://mongo-service:27017/user-activity-log"
+        - name: KAFKA_BROKERS
+          value: "kafka-service:9092"
+        - name: KAFKA_CLIENT_ID
+          value: "activity-log-service"
+        - name: KAFKA_GROUP_ID
+          value: "activity-log-group"
+        - name: KAFKA_TOPIC
+          value: "user-activities"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: user-activity-log-service
+spec:
+  selector:
+    app: user-activity-log
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 3000
+  type: LoadBalancer
