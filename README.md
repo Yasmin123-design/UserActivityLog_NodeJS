@@ -12,16 +12,19 @@ This service follows **Domain-Driven Design (DDD)** principles and an **Event-Dr
 - **Interface Layer**: Express.js REST API providing clean endpoints for interaction.
 
 ### Event-Driven Flow
+
 1. **Producer**: When a `POST /api/logs` request arrives, the service validates the data and publishes a message to a Kafka topic.
 2. **Consumer**: A background consumer listens to the Kafka topic and asynchronously persists the activity logs to MongoDB. This decoupling ensures the API remains fast and scalable.
 
 ## Setup Instructions
 
 ### Prerequisites
+
 - Docker & Docker Compose
 - (Optional) Node.js 18+ for local development
 
 ### Running with Docker Compose
+
 1. Clone the repository.
 2. Ensure Docker is running.
 3. Run:
@@ -31,6 +34,7 @@ This service follows **Domain-Driven Design (DDD)** principles and an **Event-Dr
 4. The API will be available at `http://localhost:3000`.
 
 ### Local Development Setup
+
 1. Install dependencies:
    ```bash
    npm install
@@ -45,6 +49,7 @@ This service follows **Domain-Driven Design (DDD)** principles and an **Event-Dr
 ## REST API Documentation
 
 ### 1. Log User Activity
+
 - **URL**: `/api/logs`
 - **Method**: `POST`
 - **Body**:
@@ -58,6 +63,7 @@ This service follows **Domain-Driven Design (DDD)** principles and an **Event-Dr
 - **Response**: `202 Accepted` (Activity is being processed).
 
 ### 2. Fetch User Activity Logs (with Pagination & Filtering)
+
 - **URL**: `/api/logs`
 - **Method**: `GET`
 - **Query Parameters**:
@@ -70,8 +76,9 @@ This service follows **Domain-Driven Design (DDD)** principles and an **Event-Dr
 - **Response**: `200 OK` with logs and total count.
 
 ## Kubernetes Deployment
+
 Kubernetes manifests are located in the `k8s/` directory.
+
 ```bash
 kubectl apply -f k8s/k8s-manifests.yaml
 ```
-*Note: Update the image name in `k8s-manifests.yaml` to your container registry path.*
